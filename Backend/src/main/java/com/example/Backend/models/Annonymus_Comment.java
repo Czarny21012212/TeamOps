@@ -19,8 +19,7 @@ public class Annonymus_Comment {
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    public Annonymus_Comment(Long id, String title, String content, char irritation_level, Company company) {
-        this.id = id;
+    public Annonymus_Comment(String title, String content, char irritation_level, Company company) {
         this.title = title;
         this.content = content;
         this.irritation_level = irritation_level;

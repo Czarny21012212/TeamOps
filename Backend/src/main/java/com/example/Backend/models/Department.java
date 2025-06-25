@@ -24,8 +24,14 @@ public class Department {
     @OneToMany(mappedBy = "dep", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Membership> memberships = new ArrayList<>();
 
-    public Department(Long id, String dep_name, Company company) {
-        this.id = id;
+    @OneToMany(mappedBy = "dep", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> task = new ArrayList<>();
+
+    @OneToMany(mappedBy = "dep", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task_Problem> taskProblems = new ArrayList<>();
+
+
+    public Department(String dep_name, Company company) {
         this.dep_name = dep_name;
         this.company = company;
     }
@@ -44,6 +50,12 @@ public class Department {
 
     public List<Membership> getMemberships() {return memberships;}
     public void setMemberships(List<Membership> memberships) {this.memberships = memberships;}
+
+    public List<Task> getTask() {return task;}
+    public void setTask(List<Task> task) {this.task = task;}
+
+    public List<Task_Problem> getTaskProblems() {return taskProblems;}
+    public void setTaskProblems(List<Task_Problem> taskProblems) {this.taskProblems = taskProblems;}
 
 
 }

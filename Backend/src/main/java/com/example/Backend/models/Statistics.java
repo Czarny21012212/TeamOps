@@ -20,8 +20,7 @@ public class Statistics {
     @JoinColumn(name = "dep_id", nullable = false)
     private Department dep;
 
-    public Statistics(Long id, int finished_tasks, int problematic_finished_tasks, float avg_difficulty, float avg_understand, float avg_clarity, float avg_time_spent, Department dep) {
-        this.id = id;
+    public Statistics(int finished_tasks, int problematic_finished_tasks, float avg_difficulty, float avg_understand, float avg_clarity, float avg_time_spent, Department dep) {
         this.finished_tasks = finished_tasks;
         this.problematic_finished_tasks = problematic_finished_tasks;
         this.avg_difficulty = avg_difficulty;

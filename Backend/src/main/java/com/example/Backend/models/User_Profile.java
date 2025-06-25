@@ -16,8 +16,7 @@ public class User_Profile {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    public User_Profile(Long id, int finished_tasks, float avg_difficult_level, User user ) {
-        this.id = id;
+    public User_Profile(int finished_tasks, float avg_difficult_level, User user ) {
         this.finished_tasks = finished_tasks;
         this.avg_difficult_level = avg_difficult_level;
         this.user = user;

@@ -31,8 +31,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private User_Profile user_profile;
 
-    public User(Long id, String email, String password, String first_name, String last_name, String photo_name) {
-        this.id = id;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> task = new ArrayList<>();
+
+    public User( String email, String password, String first_name, String last_name, String photo_name) {
         this.email = email;
         this.password = password;
         this.first_name = first_name;
@@ -74,6 +76,9 @@ public class User {
 
     public User_Profile getUser_profile() {return user_profile;}
     public void setUser_profile(User_Profile user_profile) {this.user_profile = user_profile;}
+
+    public List<Task> getTask() {return task;}
+    public void setTask(List<Task> task) {this.task = task;}
 
 
 }

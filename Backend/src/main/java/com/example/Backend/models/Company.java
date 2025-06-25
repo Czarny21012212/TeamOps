@@ -24,8 +24,7 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> departments = new ArrayList<>();
 
-    public Company(Long id, String comapny_name, User user) {
-        this.id = id;
+    public Company(String comapny_name, User user) {
         this.comapny_name = comapny_name;
         this.user = user;
     }

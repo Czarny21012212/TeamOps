@@ -24,8 +24,7 @@ public class Membership {
     @JoinColumn(name = "dep_id", nullable = false)
     private Department dep;
 
-    public Membership(Long id, String position, Date date, boolean is_leader, User user, Department dep) {
-        this.id = id;
+    public Membership(String position, Date date, boolean is_leader, User user, Department dep) {
         this.position = position;
         this.date = date;
         this.is_leader = is_leader;
