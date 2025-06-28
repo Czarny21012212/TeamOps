@@ -1,4 +1,4 @@
-package com.example.Backend.models;
+package com.example.Backend.model;
 
 import jakarta.persistence.*;
 

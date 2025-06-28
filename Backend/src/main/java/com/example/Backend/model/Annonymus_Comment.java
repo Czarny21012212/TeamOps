@@ -1,7 +1,6 @@
-package com.example.Backend.models;
+package com.example.Backend.model;
 
 import jakarta.persistence.*;
-import org.w3c.dom.Text;
 
 @Entity
 public class Annonymus_Comment {
