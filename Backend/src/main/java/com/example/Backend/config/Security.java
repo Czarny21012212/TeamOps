@@ -16,7 +16,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class Security {
-    private final JwtFilter jwtFilter;
+    private final JWTFilter jwtFilter;
+
+    public Security(JWTFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

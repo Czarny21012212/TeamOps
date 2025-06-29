@@ -30,10 +30,6 @@ public class authenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) throws NoSuchAlgorithmException {
-        Map<String, String> map = new HashMap<>();
-        String token = jwtService.generateJWT(user.getEmail());
-        map.put("token", token);
-        return ResponseEntity.ok(map);
 
     }
 
