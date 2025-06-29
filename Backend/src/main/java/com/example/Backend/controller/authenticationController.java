@@ -20,10 +20,8 @@ public class authenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestPart User user, @RequestPart MultipartFile image_file) throws IOException {
-        Map<String, String> response = new HashMap<>();
-
-        return userService.register(user, image_file);
+    public ResponseEntity<Map<String, String>> register( @RequestBody User user){
+        return userService.register(user);
     }
 
 }
