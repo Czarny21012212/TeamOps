@@ -30,7 +30,7 @@ public class Task {
     private Department dep;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task_Problem> task_problems = new ArrayList<>();
+    private List<TaskProblem> task_problems = new ArrayList<>();
 
     public Task(String title, String cotent, char difficult_levels, Date date, String status, boolean is_read, User user, Department dep) {
         this.title = title;
@@ -70,6 +70,6 @@ public class Task {
     public Department getDep() {return dep;}
     public void setDep(Department dep) {this.dep = dep;}
 
-    public List<Task_Problem> getTask_problems() {return task_problems;}
-    public void setTask_problems(List<Task_Problem> task_problems) {}
+    public List<TaskProblem> getTask_problems() {return task_problems;}
+    public void setTask_problems(List<TaskProblem> task_problems) {}
 }

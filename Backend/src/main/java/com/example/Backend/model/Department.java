@@ -28,7 +28,7 @@ public class Department {
     private List<Task> task = new ArrayList<>();
 
     @OneToMany(mappedBy = "dep", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task_Problem> taskProblems = new ArrayList<>();
+    private List<TaskProblem> taskProblems = new ArrayList<>();
 
 
     public Department(String dep_name, Company company) {
@@ -54,8 +54,8 @@ public class Department {
     public List<Task> getTask() {return task;}
     public void setTask(List<Task> task) {this.task = task;}
 
-    public List<Task_Problem> getTaskProblems() {return taskProblems;}
-    public void setTaskProblems(List<Task_Problem> taskProblems) {this.taskProblems = taskProblems;}
+    public List<TaskProblem> getTaskProblems() {return taskProblems;}
+    public void setTaskProblems(List<TaskProblem> taskProblems) {this.taskProblems = taskProblems;}
 
 
 }

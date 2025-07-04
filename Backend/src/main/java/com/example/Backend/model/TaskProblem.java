@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.sql.Date;
 
 @Entity
-public class Task_Problem {
-    public Task_Problem() {}
+public class TaskProblem {
+    public TaskProblem() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +24,7 @@ public class Task_Problem {
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    public Task_Problem( String title, String content, Date date, Department dep, Task task) {
+    public TaskProblem(String title, String content, Date date, Department dep, Task task) {
         this.title = title;
         this.content = content;
         this.date = date;

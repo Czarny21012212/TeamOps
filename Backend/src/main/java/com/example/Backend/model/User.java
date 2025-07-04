@@ -36,7 +36,7 @@ public class User {
     private  List<Inbox> inbox_recipient = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private User_Profile user_profile;
+    private UserProfile user_profile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> task = new ArrayList<>();
@@ -84,8 +84,8 @@ public class User {
         this.inbox_recipient = inbox_recipient;
     }
 
-    public User_Profile getUser_profile() {return user_profile;}
-    public void setUser_profile(User_Profile user_profile) {this.user_profile = user_profile;}
+    public UserProfile getUser_profile() {return user_profile;}
+    public void setUser_profile(UserProfile user_profile) {this.user_profile = user_profile;}
 
     public List<Task> getTask() {return task;}
     public void setTask(List<Task> task) {this.task = task;}

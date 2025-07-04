@@ -1,7 +1,7 @@
 package com.example.Backend.config;
 
 import com.example.Backend.model.User;
-import com.example.Backend.repository.User_Repository;
+import com.example.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 @Service
 public class MyUserDetailsService implements MyUserDetailsInterface, UserDetailsService {
 
-    private final User_Repository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MyUserDetailsService(User_Repository userRepository) {
+    public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

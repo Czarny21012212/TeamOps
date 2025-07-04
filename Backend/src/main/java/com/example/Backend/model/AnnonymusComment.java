@@ -3,8 +3,8 @@ package com.example.Backend.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Annonymus_Comment {
-    public Annonymus_Comment() {}
+public class AnnonymusComment {
+    public AnnonymusComment() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,7 +18,7 @@ public class Annonymus_Comment {
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    public Annonymus_Comment(String title, String content, char irritation_level, Company company) {
+    public AnnonymusComment(String title, String content, char irritation_level, Company company) {
         this.title = title;
         this.content = content;
         this.irritation_level = irritation_level;

@@ -1,7 +1,7 @@
 package com.example.Backend.service;
 
 import com.example.Backend.model.User;
-import com.example.Backend.repository.User_Repository;
+import com.example.Backend.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +13,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class UserService {
-   private final User_Repository user_repository;
+   private final UserRepository user_repository;
    private final PasswordEncoder passwordEncoder;
 
    @Autowired
    AuthenticationManager authenticationManager;
 
-   public UserService(User_Repository user_repository, PasswordEncoder passwordEncoder) {
+   public UserService(UserRepository user_repository, PasswordEncoder passwordEncoder) {
       this.user_repository = user_repository;
        this.passwordEncoder = passwordEncoder;
    }
