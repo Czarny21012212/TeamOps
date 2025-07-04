@@ -31,9 +31,8 @@ public class Department {
     private List<TaskProblem> taskProblems = new ArrayList<>();
 
 
-    public Department(String dep_name, Company company) {
+    public Department(String dep_name) {
         this.dep_name = dep_name;
-        this.company = company;
     }
 
     public Long getId() {return id;}
