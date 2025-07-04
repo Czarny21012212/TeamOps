@@ -26,8 +26,8 @@ public class User {
     @ColumnDefault("null")
     private byte[] photo_date;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Company company;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Company> companies = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Inbox> inbox_owner = new ArrayList<>();
@@ -71,9 +71,6 @@ public class User {
     public String getPhoto_name() {return photo_name;}
     public void setPhoto_name(String photoName) {this.photo_name = photoName;}
 
-    public Company getCompany() {return company;}
-    public void setCompany(Company company) {this.company = company;}
-
     public List<Inbox> getInbox_owner() {return inbox_owner;}
     public void setInbox_owner(List<Inbox> inbox_owner) {
         this.inbox_owner = inbox_owner;
@@ -95,4 +92,7 @@ public class User {
 
     public byte[] getPhoto_date() {return photo_date;}
     public void setPhoto_date(byte[] photo_date) {this.photo_date = photo_date;}
+
+    public List<Company> getCompanies() {return companies;}
+    public void setCompanies(List<Company> companies) {}
 }

@@ -15,7 +15,7 @@ public class Company {
     private String company_name;
     private String company_description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admin_id", nullable = false, unique = true)
     private User user;
 
@@ -25,9 +25,8 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> departments = new ArrayList<>();
 
-    public Company(String comapny_name, User user, String company_description) {
+    public Company(String comapny_name, String company_description) {
         this.company_name = comapny_name;
-        this.user = user;
         this.company_description = company_description;
     }
 
@@ -45,8 +44,4 @@ public class Company {
 
     public List<AnnonymusComment> getComments() {return comments;}
     public void setComments(List<AnnonymusComment> comments) {this.comments = comments;}
-
-
-
-
 }
