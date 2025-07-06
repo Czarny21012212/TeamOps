@@ -25,8 +25,11 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> departments = new ArrayList<>();
 
-    public Company(String comapny_name, String company_description) {
-        this.company_name = comapny_name;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Membership> memberships = new ArrayList<>();
+
+    public Company(String company_name, String company_description) {
+        this.company_name = company_name;
         this.company_description = company_description;
     }
 

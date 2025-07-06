@@ -12,7 +12,7 @@ public class Membership {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String position;
-    private Date date;
+    private java.util.Date date;
     private boolean is_leader;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -23,12 +23,14 @@ public class Membership {
     @JoinColumn(name = "dep_id", nullable = false)
     private Department dep;
 
-    public Membership(String position, Date date, boolean is_leader, User user, Department dep) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+
+    public Membership(String position, Date date, boolean is_leader) {
         this.position = position;
         this.date = date;
         this.is_leader = is_leader;
-        this.user = user;
-        this.dep = dep;
     }
 
     public Long getId() {return id;}
@@ -37,8 +39,8 @@ public class Membership {
     public String getPosition() {return position;}
     public void setPosition(String position) {this.position = position;}
 
-    public Date getDate() {return date;}
-    public void setDate(Date date) {this.date = date;}
+    public java.util.Date getDate() {return date;}
+    public void setDate(java.util.Date date) {this.date = date;}
 
     public boolean isIs_leader() {return is_leader;}
     public void setIs_leader(boolean is_leader) {this.is_leader = is_leader;}
@@ -48,5 +50,8 @@ public class Membership {
 
     public Department getDep() {return dep;}
     public void setDep(Department dep) {this.dep = dep;}
+
+    public Company getCompany() {return company;}
+    public void setCompany(Company company) {this.company = company;}
 
 }
