@@ -1,6 +1,8 @@
 package com.example.Backend.service;
 
 import com.example.Backend.model.User;
+import com.example.Backend.model.UserProfile;
+import com.example.Backend.repository.UserProfileRepository;
 import com.example.Backend.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -25,8 +27,12 @@ public class UserService {
 
    @Autowired
    AuthenticationManager authenticationManager;
+    @Autowired
+    private UserProfileService userProfileService;
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
-   public UserService(UserRepository user_repository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository user_repository, PasswordEncoder passwordEncoder) {
       this.user_repository = user_repository;
        this.passwordEncoder = passwordEncoder;
    }
@@ -44,6 +50,12 @@ public class UserService {
 
          user.setPassword(passwordEncoder.encode(user.getPassword()));
          user_repository.save(user);
+
+         UserProfile userProfile = new UserProfile();
+         userProfile.setUser(user);
+         userProfile.setFinished_tasks(0);
+         userProfile.setDifficult_level(0);
+         userProfileRepository.save(userProfile);
 
         response.put("message", "success");
      }catch(Exception e){
