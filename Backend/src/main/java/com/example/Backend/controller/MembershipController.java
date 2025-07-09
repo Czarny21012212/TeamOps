@@ -20,4 +20,5 @@ public class MembershipController {
     public ResponseEntity<Map<String, String>> addUserToDepartment(@RequestBody MembershipWithDepartmentAndCompany request) {
         return membershipService.addUserToDepartment(request);
     }
+
 }

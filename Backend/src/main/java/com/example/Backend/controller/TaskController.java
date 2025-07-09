@@ -24,4 +24,5 @@ public class TaskController {
     public ResponseEntity<Map<String, String>> createTask (@RequestBody TaskWithUserAndDepartmentDTO request) {
         return taskService.createTask(request);
     }
+
 }

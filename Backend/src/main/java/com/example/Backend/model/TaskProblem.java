@@ -2,7 +2,7 @@ package com.example.Backend.model;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 public class TaskProblem {
@@ -24,11 +24,13 @@ public class TaskProblem {
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    public TaskProblem(String title, String content, Date date, Department dep, Task task) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public TaskProblem(String title, String content, Task task) {
         this.title = title;
         this.content = content;
-        this.date = date;
-        this.dep = dep;
         this.task = task;
     }
     public int getId() {return id;}
@@ -47,4 +49,7 @@ public class TaskProblem {
 
     public Task getTask() {return task;}
     public void setTask(Task task) {this.task = task;}
+
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
 }

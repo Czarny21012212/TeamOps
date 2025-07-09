@@ -41,6 +41,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> task = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskProblem> task_problem = new ArrayList<>();
+
     public User( String email, String password, String first_name, String last_name, String photo_name, String photo_type, byte[] photo_date) {
         this.email = email;
         this.password = password;
@@ -95,4 +98,7 @@ public class User {
 
     public List<Company> getCompanies() {return companies;}
     public void setCompanies(List<Company> companies) {}
+
+    public List<TaskProblem> getTask_problem() {return task_problem;}
+    public void setTask_problem(List<TaskProblem> task_problem) {}
 }
