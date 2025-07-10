@@ -1,7 +1,9 @@
 package com.example.Backend.service;
 
+import com.example.Backend.model.Membership;
 import com.example.Backend.model.User;
 import com.example.Backend.model.UserProfile;
+import com.example.Backend.repository.MembershipRepository;
 import com.example.Backend.repository.UserProfileRepository;
 import com.example.Backend.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +33,8 @@ public class UserService {
     private UserProfileService userProfileService;
     @Autowired
     private UserProfileRepository userProfileRepository;
+    @Autowired
+    private MembershipRepository membershipRepository;
 
     public UserService(UserRepository user_repository, PasswordEncoder passwordEncoder) {
       this.user_repository = user_repository;
@@ -56,6 +60,15 @@ public class UserService {
          userProfile.setFinished_tasks(0);
          userProfile.setDifficult_level(0);
          userProfileRepository.save(userProfile);
+
+         Membership membership = new Membership();
+         membership.setUser(user);
+         membership.setPosition("null");
+         membership.setCompany(null);
+         membership.setDate(null);
+         membership.setIs_leader(false);
+         membership.setDep(null);
+         membershipRepository.save(membership);
 
         response.put("message", "success");
      }catch(Exception e){

@@ -48,12 +48,9 @@ public class MembershipService {
             Long company_id = membershipRepository.findCompanyIdByUserID(user);
 
 
-            Membership membership = new Membership();
+            Membership membership = user.getMembership();
             membership.setDate(date);
-            System.out.println(date);
             membership.setIs_leader(request.isIs_leader());
-            User employee = userRepository.findById(request.getUser_id()).get();
-            membership.setUser(employee);
             membership.setPosition(request.getPosition());
             Company company = companyRepository.findById(company_id).get();
             membership.setCompany(company);

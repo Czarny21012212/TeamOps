@@ -16,15 +16,15 @@ public class Membership {
     private boolean is_leader;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = true, unique = true)
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dep_id", nullable = false)
+    @JoinColumn(name = "dep_id", nullable = true)
     private Department dep;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_id", nullable = true)
     private Company company;
 
     public Membership(String position, Date date, boolean is_leader) {
