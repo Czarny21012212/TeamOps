@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class MembershipService {
@@ -47,8 +48,16 @@ public class MembershipService {
             User user = userRepository.findByEmail(auth.getName()).get();
             Long company_id = membershipRepository.findCompanyIdByUserID(user);
 
+            Optional<User> employee_test = userRepository.findById(request.getUser_id());
 
-            Membership membership = user.getMembership();
+            if(employee_test.isEmpty()){
+                response.put("message", "User not found");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+            User employee = employee_test.get();
+
+            Membership membership = employee.getMembership();
             membership.setDate(date);
             membership.setIs_leader(request.isIs_leader());
             membership.setPosition(request.getPosition());
