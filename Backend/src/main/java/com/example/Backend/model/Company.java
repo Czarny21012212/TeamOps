@@ -20,7 +20,7 @@ public class Company {
     private User user;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AnnonymusComment> comments = new ArrayList<>();
+    private List<AnonymousComment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> departments = new ArrayList<>();
@@ -45,6 +45,6 @@ public class Company {
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;}
 
-    public List<AnnonymusComment> getComments() {return comments;}
-    public void setComments(List<AnnonymusComment> comments) {this.comments = comments;}
+    public List<AnonymousComment> getComments() {return comments;}
+    public void setComments(List<AnonymousComment> comments) {this.comments = comments;}
 }
