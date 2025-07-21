@@ -32,9 +32,6 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Inbox> inbox_owner = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
-    private  List<Inbox> inbox_recipient = new ArrayList<>();
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserProfile user_profile;
 
@@ -80,11 +77,6 @@ public class User {
     public List<Inbox> getInbox_owner() {return inbox_owner;}
     public void setInbox_owner(List<Inbox> inbox_owner) {
         this.inbox_owner = inbox_owner;
-    }
-
-    public List<Inbox> getInbox_recipient() {return inbox_recipient;}
-    public void setInbox_recipient(List<Inbox> inbox_recipient) {
-        this.inbox_recipient = inbox_recipient;
     }
 
     public UserProfile getUser_profile() {return user_profile;}

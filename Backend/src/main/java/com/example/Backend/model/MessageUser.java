@@ -14,7 +14,7 @@ public class MessageUser {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "message_id", nullable = false)
     private Inbox inbox;
 

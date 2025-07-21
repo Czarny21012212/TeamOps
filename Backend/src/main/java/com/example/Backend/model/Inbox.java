@@ -1,8 +1,11 @@
 package com.example.Backend.model;
 
 import jakarta.persistence.*;
+import org.aspectj.bridge.Message;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Inbox {
@@ -21,12 +24,11 @@ public class Inbox {
     @JoinColumn(name = "sender_id", nullable = false)
     private User owner;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "recipient_id", nullable = false)
-    private User recipient;
+    @ManyToMany(mappedBy = "inbox", cascade = CascadeType.ALL)
+    private List<User> recipient = new ArrayList<User>();
 
 
-    public Inbox(String title, String content, Date date, boolean is_read, User owner, User recipient) {
+    public Inbox(String title, String content, Date date, boolean is_read, User owner, List<User> recipient) {
         this.title = title;
         this.content = content;
         this.date = date;
@@ -53,6 +55,6 @@ public class Inbox {
     public User getOwner() {return owner;}
     public void setOwner(User owner) {this.owner = owner;}
 
-    public User getRecipient() {return recipient;}
-    public void setRecipient(User recipient) {this.recipient = recipient;}
+    public List<User> getRecipient() {return recipient;}
+    public void setRecipient(List<User> recipient) {this.recipient = recipient;}
 }
