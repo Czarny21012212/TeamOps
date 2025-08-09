@@ -30,7 +30,15 @@ public class User {
     private List<Company> companies = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Inbox> inbox_owner = new ArrayList<>();
+    private List<Message> inbox_owner = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_message",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id")
+    )
+    private List<Message> messages;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserProfile user_profile;
@@ -74,11 +82,6 @@ public class User {
     public String getPhoto_name() {return photo_name;}
     public void setPhoto_name(String photoName) {this.photo_name = photoName;}
 
-    public List<Inbox> getInbox_owner() {return inbox_owner;}
-    public void setInbox_owner(List<Inbox> inbox_owner) {
-        this.inbox_owner = inbox_owner;
-    }
-
     public UserProfile getUser_profile() {return user_profile;}
     public void setUser_profile(UserProfile user_profile) {this.user_profile = user_profile;}
 
@@ -99,4 +102,12 @@ public class User {
 
     public Membership getMembership() {return membership;}
     public void setMembership(Membership membership) {this.membership = membership;}
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 }

@@ -1,15 +1,14 @@
 package com.example.Backend.model;
 
 import jakarta.persistence.*;
-import org.aspectj.bridge.Message;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Inbox {
-    public Inbox() {}
+public class Message {
+    public Message() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,21 +17,21 @@ public class Inbox {
     @Lob
     private String content;
     private Date date;
-    private boolean is_read;
+    private int count_of_read;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sender_id", nullable = false)
     private User owner;
 
-    @ManyToMany(mappedBy = "inbox", cascade = CascadeType.ALL)
-    private List<User> recipient = new ArrayList<User>();
+    @ManyToMany(mappedBy = "messages", cascade = CascadeType.ALL)
+    private List<User> recipient = new ArrayList<>();
 
 
-    public Inbox(String title, String content, Date date, boolean is_read, User owner, List<User> recipient) {
+    public Message(String title, String content, Date date, int count_of_read, User owner, List<User> recipient) {
         this.title = title;
         this.content = content;
         this.date = date;
-        this.is_read = is_read;
+        this.count_of_read = count_of_read;
         this.owner = owner;
         this.recipient = recipient;
     }
@@ -49,8 +48,8 @@ public class Inbox {
     public Date getDate() {return date;}
     public void setDate(Date date) {this.date = date;}
 
-    public boolean isIs_read() {return is_read;}
-    public void setIs_read(boolean is_read) {this.is_read = is_read;}
+    public int getCount_of_read() {return count_of_read;}
+    public void setCount_of_read(int count_of_read) {this.count_of_read = count_of_read;}
 
     public User getOwner() {return owner;}
     public void setOwner(User owner) {this.owner = owner;}
