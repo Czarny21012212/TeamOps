@@ -53,8 +53,14 @@ public class MessageService {
             message.setContent(request.getContent());
             message.setOwner(owner);
             message.setDate(dateOfSendMessage);
-            List<User> recipient = userRepository.findAllById(request.getRecipient());
-            message.setRecipient(recipient);
+            List<User> recipients = userRepository.findAllById(request.getRecipient());
+
+            for (User user : recipients) {
+                message.getRecipient().add(user);
+                user.getMessages().add(message);
+                
+            }
+
             messageRepository.save(message);
             System.out.println(request.getTitle());
 
