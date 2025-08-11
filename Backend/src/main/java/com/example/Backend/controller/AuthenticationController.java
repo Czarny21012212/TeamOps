@@ -26,7 +26,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User user, HttpServletRequest request) throws NoSuchAlgorithmException {
-        return userService.login(user, request);
+        return userService.login(user , request);
     }
 
 }
