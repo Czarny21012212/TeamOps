@@ -18,9 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -35,6 +33,8 @@ public class UserService {
     private UserProfileRepository userProfileRepository;
     @Autowired
     private MembershipRepository membershipRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public UserService(UserRepository user_repository, PasswordEncoder passwordEncoder) {
       this.user_repository = user_repository;
@@ -97,6 +97,21 @@ public class UserService {
            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
        }
        return new ResponseEntity<>(response, HttpStatus.OK);
+   }
 
+   public ResponseEntity<Map<String, String>> dataAboutUser(Authentication auth){
+        Map<String, String> response = new HashMap<>();
+
+       User user = userRepository.findByEmail(auth.getName()).get();
+
+        if(user == null) {
+            response.put("message", "User not found");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        response.put("email", user.getEmail());
+        response.put("firstName", user.getFirstName());
+        response.put("lastName", user.getLastName());
+        return new ResponseEntity<>(response, HttpStatus.OK);
    }
 }
