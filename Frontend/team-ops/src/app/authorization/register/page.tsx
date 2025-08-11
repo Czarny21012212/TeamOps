@@ -202,6 +202,7 @@ export default function Register() {
             <span className="text-zinc-400 text-sm">
               Masz już konto?{" "}
               <Button
+                onClick={() => window.location.href = "/authorization/login"}
                 variant="link"
                 className="px-0 font-normal text-white hover:text-zinc-300"
               >

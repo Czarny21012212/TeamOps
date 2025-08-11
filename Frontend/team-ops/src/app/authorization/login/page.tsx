@@ -31,6 +31,7 @@ export default function Login() {
         const data = await response.json();
         setMessage("Logowanie pomyślne!");
         console.log("Success:", data);
+        window.location.href = "/home"; 
       } else {
         throw new Error("Login failed");
       }
@@ -168,6 +169,7 @@ export default function Login() {
             <span className="text-zinc-400 text-sm">
               Nie masz konta?{" "}
               <Button
+                onClick={() => window.location.href = "/authorization/register"}
                 variant="link"
                 className="px-0 font-normal text-white hover:text-zinc-300"
               >
