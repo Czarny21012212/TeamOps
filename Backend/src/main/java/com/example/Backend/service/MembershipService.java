@@ -46,7 +46,7 @@ public class MembershipService {
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
             User user = userRepository.findByEmail(auth.getName()).get();
-            Long company_id = membershipRepository.findCompanyIdByUserID(user);
+            Long company_id = companyRepository.findCompanyIdByUserID(user);
 
             Optional<User> employee_test = userRepository.findById(request.getUser_id());
 

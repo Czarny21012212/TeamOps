@@ -1,13 +1,11 @@
 package com.example.Backend.controller;
 
 import com.example.Backend.Dto.CompanyWithDepartmentDTO;
-import com.example.Backend.model.Department;
+
 import com.example.Backend.service.DepartmentService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 import java.util.Map;
 
@@ -15,14 +13,24 @@ import java.util.Map;
 @RequestMapping("/api")
 public class DepartmentController {
 
-    private final DepartmentService departmentService1;
+    private final DepartmentService departmentService;
 
-    public DepartmentController(DepartmentService departmentService1) {
-        this.departmentService1 = departmentService1;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     @PostMapping("/createDepartment")
     public ResponseEntity<Map<String, String>> createDepartment(@RequestBody CompanyWithDepartmentDTO request) {
-        return departmentService1.createDepartment(request.getDepartment(), request.getCompany_id());
+        return departmentService.createDepartment(request.getDepartment(), request.getCompany_id());
+    }
+
+    @GetMapping("/showAllDepartment")
+    public ResponseEntity<List<Object>> showAllDepartment() {
+        return departmentService.showAllDepartment();
+    }
+
+    @GetMapping("/showUserDepartment")
+    public ResponseEntity<Map<String, String>> showUserDepartment() {
+        return departmentService.showUserDepartment();
     }
 }

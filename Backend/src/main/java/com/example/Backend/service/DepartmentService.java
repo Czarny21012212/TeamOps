@@ -1,21 +1,17 @@
 package com.example.Backend.service;
 
+import com.example.Backend.model.Company;
 import com.example.Backend.model.Department;
 import com.example.Backend.model.Statistics;
 import com.example.Backend.model.User;
-import com.example.Backend.repository.CompanyRepository;
-import com.example.Backend.repository.DepartmentRepository;
-import com.example.Backend.repository.StatisticsRepository;
-import com.example.Backend.repository.UserRepository;
+import com.example.Backend.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class DepartmentService {
@@ -25,13 +21,15 @@ public class DepartmentService {
     private final DepartmentRepository departmentService;
     private final DepartmentRepository departmentRepository;
     private final StatisticsRepository statisticsRepository;
+    private final MembershipRepository membershipRepository;
 
-    public DepartmentService(UserRepository userRepository, CompanyRepository companyRepository, DepartmentRepository departmentService, DepartmentRepository departmentRepository, StatisticsRepository statisticsRepository) {
+    public DepartmentService(UserRepository userRepository, CompanyRepository companyRepository, DepartmentRepository departmentService, DepartmentRepository departmentRepository, StatisticsRepository statisticsRepository, MembershipRepository membershipRepository, MembershipRepository membershipRepository1) {
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
         this.departmentService = departmentService;
         this.departmentRepository = departmentRepository;
         this.statisticsRepository = statisticsRepository;
+        this.membershipRepository = membershipRepository1;
     }
 
     public ResponseEntity<Map<String, String>> createDepartment(Department department, Long company_id){
@@ -68,4 +66,68 @@ public class DepartmentService {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<List<Object>> showAllDepartment(){
+        List<Object> list = new ArrayList<>();
+        Map<String, String> response = new HashMap<>();
+
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if(auth == null){
+                response.put("message", "You are not logged in");
+                return new ResponseEntity<>(list, HttpStatus.UNAUTHORIZED);
+            }
+            User user = userRepository.findByEmail(auth.getName()).get();
+
+            Long companyId = companyRepository.findCompanyIdByUserID(user);
+
+            List<Department> departments = companyRepository.showAllDepartments(companyId);
+
+            System.out.println(departments.size());
+            for(Department department : departments){
+                Map<String, String> map = new HashMap<>();
+                map.put("depName", department.getDep_name());
+                map.put("depId", String.valueOf(department.getId()));
+                System.out.println(department.getDep_name());
+                list.add(map);
+            }
+
+            return new ResponseEntity<>(list, HttpStatus.OK);
+
+        }catch(Exception e){
+            response.put("message", e.getMessage());
+            list.add(response);
+            return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<Map<String, String>> showUserDepartment(){
+        Map<String, String> response = new HashMap<>();
+
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if(auth == null){
+                response.put("message", "Please login!");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+
+            User user = userRepository.findByEmail(auth.getName()).get();
+
+            Department department = membershipRepository.showUserDepartment(user);
+
+            response.put("message", "Department details");
+            response.put("depId", String.valueOf(department.getId()));
+            response.put("depName", department.getDep_name());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        }catch(Exception e){
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

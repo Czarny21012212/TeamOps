@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("Select m.is_leader from Membership m where m.user = :id")
-    Boolean isLeader(@Param("id") User user);
+    @Query("Select m.is_leader from Membership m where m.user = :user")
+    Boolean isLeader(@Param("user") User user);
 
-    @Query("Select m.dep from Membership m where m.user = :id")
-    Department getDepId(@Param("id") User user);
+    @Query("Select m.dep from Membership m where m.user = :user")
+    Department getDepId(@Param("user") User user);
 }

@@ -5,10 +5,7 @@ import com.example.Backend.model.Department;
 import com.example.Backend.model.Task;
 import com.example.Backend.model.TaskProblem;
 import com.example.Backend.model.User;
-import com.example.Backend.repository.DepartmentRepository;
-import com.example.Backend.repository.TaskProblemRepository;
-import com.example.Backend.repository.TaskRepository;
-import com.example.Backend.repository.UserRepository;
+import com.example.Backend.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,12 +22,16 @@ public class TaskProblemService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final TaskRepository taskRepository;
+    private final MembershipService membershipService;
+    private final MembershipRepository membershipRepository;
 
-    public TaskProblemService(TaskProblemRepository taskProblemRepository, UserRepository userRepository, DepartmentRepository departmentRepository, TaskRepository taskRepository) {
+    public TaskProblemService(TaskProblemRepository taskProblemRepository, UserRepository userRepository, DepartmentRepository departmentRepository, TaskRepository taskRepository, MembershipService membershipService, MembershipRepository membershipRepository) {
         this.taskProblemRepository = taskProblemRepository;
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
         this.taskRepository = taskRepository;
+        this.membershipService = membershipService;
+        this.membershipRepository = membershipRepository;
     }
 
     public ResponseEntity<Map<String, String>> createTaskProblem(TaskProblemDTO request) {
@@ -52,7 +53,7 @@ public class TaskProblemService {
             }
 
             Date date = new Date();
-            Department dep = departmentRepository.getDepId(employee);
+            Department dep = membershipRepository.getDepId(employee);
             Task task = taskRepository.findById(request.getTask_id()).get();
 
             TaskProblem taskProblem = new TaskProblem();

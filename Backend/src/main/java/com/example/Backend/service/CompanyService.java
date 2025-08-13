@@ -64,7 +64,7 @@ public class CompanyService {
             }
 
             User user = userRepository.findByEmail(auth.getName()).get();
-            Company company = membershipRepository.showComapny(user);
+            Company company = companyRepository.showComapny(user);
 
             System.out.println(company.getCompany_name());
 

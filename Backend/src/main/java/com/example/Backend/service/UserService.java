@@ -1,8 +1,10 @@
 package com.example.Backend.service;
 
+import com.example.Backend.model.Department;
 import com.example.Backend.model.Membership;
 import com.example.Backend.model.User;
 import com.example.Backend.model.UserProfile;
+import com.example.Backend.repository.DepartmentRepository;
 import com.example.Backend.repository.MembershipRepository;
 import com.example.Backend.repository.UserProfileRepository;
 import com.example.Backend.repository.UserRepository;
@@ -35,6 +37,8 @@ public class UserService {
     private MembershipRepository membershipRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     public UserService(UserRepository user_repository, PasswordEncoder passwordEncoder) {
       this.user_repository = user_repository;
@@ -113,5 +117,42 @@ public class UserService {
         response.put("firstName", user.getFirstName());
         response.put("lastName", user.getLastName());
         return new ResponseEntity<>(response, HttpStatus.OK);
+   }
+   public ResponseEntity<List<Map<String, String>>> showUsersFromTeam(Long depId) {
+        List<Map<String, String>> response = new ArrayList<>();
+
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if(auth == null){
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+
+            if(depId == null){
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            Optional<Department> depCheck = departmentRepository.findById(depId);
+
+            if(depCheck.isEmpty()){
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            Department dep = depCheck.get();
+
+            List<User> users = membershipRepository.showUsersFromDep(dep);
+
+            for(User employee : users){
+                Map<String, String> map = new HashMap<>();
+                map.put("email", employee.getEmail());
+                map.put("firstName", employee.getFirstName());
+                map.put("lastName", employee.getLastName());
+                map.put("finishedTasks", userProfileRepository.showFinishedTasks(employee));
+                response.add(map);
+            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        }catch(Exception e){
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
    }
 }
