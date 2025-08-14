@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { CheckSquare, Clock, AlertCircle, User, Building2 } from "lucide-react";
 import Navbar from "../components/navbar/page";
-import CompanyCreator from "../components/panelToCreateCompany/page";   
+import CompanyCreator from "../components/company-creator/page";   
 
 export default function Home({ companyId }: { companyId: number }) {
 
@@ -265,7 +265,7 @@ export default function Home({ companyId }: { companyId: number }) {
                                                 {yourCompanyData ? yourCompanyData.companyDescription || "Brak opisu" : "Brak opisu"}
                                             </span>
                                         </div>
-                                        <Button onClick={() => router.push(`/company/${yourCompanyData.companyId}`)}>Przejdz</Button>
+                                        <Button onClick={() => router.push(`/your-company/${yourCompanyData.companyId}`)}>Przejdz</Button>
                                     </div>
                                 </CardContent>
                             </Card>
