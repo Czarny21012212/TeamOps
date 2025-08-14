@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
@@ -21,5 +22,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("Select m.company from Membership m where m.user = :user" )
     Company showComapny(@Param("user") User user);
+
+    @Query("Select c.id from Company c where c.user = :user")
+    Optional<Long> findYourCompanyId(@Param("user") User user);
 
 }

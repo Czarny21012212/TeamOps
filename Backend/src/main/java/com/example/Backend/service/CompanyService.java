@@ -66,10 +66,54 @@ public class CompanyService {
             User user = userRepository.findByEmail(auth.getName()).get();
             Company company = companyRepository.showComapny(user);
 
+            if(company == null){
+                response.put("message", "You are not in any company");
+            }
+
             System.out.println(company.getCompany_name());
 
             response.put("companyName", company.getCompany_name());
             response.put("companyId", String.valueOf(company.getId()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        }catch(Exception e){
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<Map<String, String>> ShowYourCompany(){
+        Map<String, String> response = new HashMap<>();
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null){
+                response.put("message", "Please Log in!");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            Optional<User> userCheck = userRepository.findByEmail(auth.getName());
+            if(userCheck.isEmpty()){
+                response.put("message", "You are not in any company");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            User user = userCheck.get();
+            Optional<Long> companyIdCheck = companyRepository.findYourCompanyId(user);
+
+            if(companyIdCheck.isEmpty()){
+                response.put("message", "You are not in any company");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            Long companyId = companyIdCheck.get();
+
+            Optional<Company> companyCheck = companyRepository.findById(companyId);
+            if(companyCheck.isEmpty()){
+                response.put("message", "You are not in any company");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            Company company = companyCheck.get();
+
+            response.put("companyName", company.getCompany_name());
+            response.put("companyId", String.valueOf(company.getId()));
+            response.put("companyDescription", company.getCompany_description());
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         }catch(Exception e){

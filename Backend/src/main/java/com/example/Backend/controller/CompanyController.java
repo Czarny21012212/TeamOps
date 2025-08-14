@@ -26,4 +26,7 @@ public class CompanyController {
     public ResponseEntity<Map<String, String>> showCompany() {
         return companyService.showCompany();
     }
+
+    @GetMapping("/showYourCompany")
+    public ResponseEntity<Map<String, String>> showYourCompany() {return companyService.ShowYourCompany();}
 }
