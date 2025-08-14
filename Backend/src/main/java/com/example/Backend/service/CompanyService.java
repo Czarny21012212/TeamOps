@@ -44,12 +44,12 @@ public class CompanyService {
             company.setUser(user);
             companyRepository.save(company);
             response.put("message", "Company created");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
 
         }catch(Exception e){
             response.put("message", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     public ResponseEntity<Map<String, String>> showCompany(){
@@ -64,16 +64,17 @@ public class CompanyService {
             }
 
             User user = userRepository.findByEmail(auth.getName()).get();
-            Company company = companyRepository.showComapny(user);
+            Optional<Company> companyCheck = companyRepository.showComapny(user);
 
-            if(company == null){
+            if(companyCheck.isEmpty()){
                 response.put("message", "You are not in any company");
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
-
-            System.out.println(company.getCompany_name());
+            Company company = companyCheck.get();
 
             response.put("companyName", company.getCompany_name());
             response.put("companyId", String.valueOf(company.getId()));
+            response.put("companyDescription", company.getCompany_description());
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         }catch(Exception e){
@@ -100,14 +101,14 @@ public class CompanyService {
 
             if(companyIdCheck.isEmpty()){
                 response.put("message", "You are not in any company");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
             Long companyId = companyIdCheck.get();
 
             Optional<Company> companyCheck = companyRepository.findById(companyId);
             if(companyCheck.isEmpty()){
                 response.put("message", "You are not in any company");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
             Company company = companyCheck.get();
 
