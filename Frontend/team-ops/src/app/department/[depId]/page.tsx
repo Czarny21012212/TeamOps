@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Users, Mail, CheckCircle, User, ArrowLeft, UserPlus } from "lucide-reac
 export default function Department() {
   const params = useParams();
   const depId = params.depId;
+  const router = useRouter();
 
     type usersData = {
         firstName?: string;
@@ -61,6 +62,7 @@ export default function Department() {
               variant="outline"
               size="sm"
               className="fixed left-10 top-10 bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-white "
+              onClick={() => router.back()}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Powrót

@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { error } from "console";
 import { useParams, useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
@@ -67,6 +68,7 @@ export default function Company() {
     return (
         <div>
             <h1 className="p-4 m-10 w-50">Company Page</h1>
+            <Button>Create Company</Button>
 
             <p className=" m-10">Twój Team</p>
             <div className="bg-gray-100 p-4 m-10 w-60 hover:bg-gray-200 cursor-pointer">
