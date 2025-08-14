@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("Select c.departments from Company c where c.id = :companyId")
-    List<Department> showAllDepartments(@Param("companyId") Long companyId);
+    Optional<List<Department>> showAllDepartments(@Param("companyId") Long companyId);
 
     @Query("Select c.id from Company c where c.user = :user")
     Long findCompanyIdByUserID(@Param("user") User user);
@@ -25,5 +25,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("Select c.id from Company c where c.user = :user")
     Optional<Long> findYourCompanyId(@Param("user") User user);
+
+    @Query("Select c.id from Company c  where c.user = :user")
+    Optional<Long> checkOwnerCompany(@Param("user") User user);
 
 }

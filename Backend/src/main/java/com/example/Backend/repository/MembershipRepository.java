@@ -10,12 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MembershipRepository extends JpaRepository<Membership, Long> {
 
     @Query("Select m.dep from Membership m where m.user = :user")
-    Department showUserDepartment(@Param("user") User user);
+    Optional<Department> showUserDepartment(@Param("user") User user);
 
     @Query("Select m.dep from Membership m where m.user = :user")
     Department getDepId(@Param("user") User user);

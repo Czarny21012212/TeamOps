@@ -12,7 +12,7 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String dep_name;
+    private String depName;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id", nullable = false)
@@ -32,14 +32,14 @@ public class Department {
 
 
     public Department(String dep_name) {
-        this.dep_name = dep_name;
+        this.depName = dep_name;
     }
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    public String getDep_name() {return dep_name;}
-    public void setDep_name(String dep_name) {this.dep_name = dep_name;}
+    public String getDep_name() {return depName;}
+    public void setDep_name(String depName) {this.depName = depName;}
 
     public Company getCompany() {return company;}
     public void setCompany(Company company) {this.company = company;}

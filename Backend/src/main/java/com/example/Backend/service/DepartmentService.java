@@ -1,5 +1,6 @@
 package com.example.Backend.service;
 
+import com.example.Backend.Dto.CompanyWithDepartmentDTO;
 import com.example.Backend.model.Company;
 import com.example.Backend.model.Department;
 import com.example.Backend.model.Statistics;
@@ -32,20 +33,37 @@ public class DepartmentService {
         this.membershipRepository = membershipRepository1;
     }
 
-    public ResponseEntity<Map<String, String>> createDepartment(Department department, Long company_id){
+    public ResponseEntity<Map<String, String>> createDepartment(CompanyWithDepartmentDTO request){
         Map<String, String> response = new HashMap<>();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        try{
-            String email = authentication.getName();
-            User admin = userRepository.findByEmail(email).get();
+        if(authentication == null){
+            response.put("message", "Unauthorized");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
 
-            if(!Objects.equals(admin.getId(), company_id)){
-                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        try{
+
+            System.out.println(request.getCompanyId() + " " + request.getDepName());
+
+            User user = userRepository.findByEmail(authentication.getName()).get();
+
+            Optional<Long> checkOwnerCompany = companyRepository.checkOwnerCompany(user);
+
+            if(checkOwnerCompany.isEmpty()){
+                response.put("message", "You are not owner");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
 
-            department.setCompany(companyRepository.findById(company_id).get());
+            if(request.getCompanyId() == null || request.getDepName() == null){
+                response.put("status", "create a company first");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+            Department department = new Department();
+            department.setCompany(companyRepository.findById(request.getCompanyId()).get());
+            department.setDep_name(request.getDepName());
             departmentRepository.save(department);
 
             Statistics statistics = new Statistics();
@@ -82,14 +100,19 @@ public class DepartmentService {
 
             Long companyId = companyRepository.findCompanyIdByUserID(user);
 
-            List<Department> departments = companyRepository.showAllDepartments(companyId);
+            Optional<List<Department>> departmentsCheck = companyRepository.showAllDepartments(companyId);
+
+            if(departmentsCheck.isEmpty()){
+                response.put("message", "Department list is empty");
+                return new ResponseEntity<>(list, HttpStatus.OK);
+            }
+            List<Department> departments = departmentsCheck.get();
 
             System.out.println(departments.size());
             for(Department department : departments){
                 Map<String, String> map = new HashMap<>();
                 map.put("depName", department.getDep_name());
                 map.put("depId", String.valueOf(department.getId()));
-                System.out.println(department.getDep_name());
                 list.add(map);
             }
 
@@ -113,9 +136,20 @@ public class DepartmentService {
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
 
-            User user = userRepository.findByEmail(auth.getName()).get();
+            Optional<User> userCheck = userRepository.findByEmail(auth.getName());
 
-            Department department = membershipRepository.showUserDepartment(user);
+            if (userCheck.isEmpty()) {
+                response.put("message", "You are not logged in");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            User user = userCheck.get();
+
+            Optional<Department> departmentCheck = membershipRepository.showUserDepartment(user);
+            if(departmentCheck.isEmpty()){
+                response.put("message", "Department list is empty");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            Department department = departmentCheck.get();
 
             response.put("message", "Department details");
             response.put("depId", String.valueOf(department.getId()));

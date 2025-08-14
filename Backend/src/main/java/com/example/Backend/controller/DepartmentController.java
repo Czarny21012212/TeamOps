@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -21,7 +22,7 @@ public class DepartmentController {
 
     @PostMapping("/createDepartment")
     public ResponseEntity<Map<String, String>> createDepartment(@RequestBody CompanyWithDepartmentDTO request) {
-        return departmentService.createDepartment(request.getDepartment(), request.getCompany_id());
+        return departmentService.createDepartment(request);
     }
 
     @GetMapping("/showAllDepartment")
