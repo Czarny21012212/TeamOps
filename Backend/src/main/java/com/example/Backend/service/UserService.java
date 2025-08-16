@@ -1,5 +1,6 @@
 package com.example.Backend.service;
 
+import com.example.Backend.Dto.UserSearchDTO;
 import com.example.Backend.model.Department;
 import com.example.Backend.model.Membership;
 import com.example.Backend.model.User;
@@ -155,4 +156,40 @@ public class UserService {
         }
 
    }
+    public ResponseEntity<List<Object>> searchUser(UserSearchDTO request){
+        List<Object> list = new ArrayList<>();
+        Map<String, String> response = new HashMap<>();
+
+        try{
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<User>> usersCheck = user_repository.searchUser(request.getFirstName(), request.getLastName());
+            if(usersCheck.isEmpty()){
+                response.put("message", "User not found");
+                list.add(response);
+                return new ResponseEntity<>(list, HttpStatus.OK);
+            }
+
+
+            for(User users : usersCheck.get()){
+                Map<String, String> map = new HashMap<>();
+                map.put("firstName", users.getFirstName());
+                map.put("lastName", users.getLastName());
+                map.put("userId", String.valueOf(users.getId()));
+                list.add(map);
+            }
+
+            return new ResponseEntity<>(list, HttpStatus.OK);
+
+        }catch(Exception e){
+            response.put("message", "error" + e.getMessage());
+            list.add(response);
+            return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }

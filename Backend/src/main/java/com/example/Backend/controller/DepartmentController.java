@@ -3,8 +3,12 @@ package com.example.Backend.controller;
 import com.example.Backend.Dto.CompanyWithDepartmentDTO;
 
 import com.example.Backend.service.DepartmentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Map;
@@ -15,9 +19,11 @@ import java.util.Map;
 public class DepartmentController {
 
     private final DepartmentService departmentService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public DepartmentController(DepartmentService departmentService) {
+    public DepartmentController(DepartmentService departmentService, SimpMessagingTemplate messagingTemplate) {
         this.departmentService = departmentService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @PostMapping("/createDepartment")
@@ -25,10 +31,11 @@ public class DepartmentController {
         return departmentService.createDepartment(request);
     }
 
-    @GetMapping("/showAllDepartment")
-    public ResponseEntity<List<Object>> showAllDepartment() {
+    @GetMapping("/showAllDepartments")
+    public ResponseEntity<List<Object>> showAllDepartments() {
         return departmentService.showAllDepartment();
     }
+
 
     @GetMapping("/showUserDepartment")
     public ResponseEntity<Map<String, String>> showUserDepartment() {

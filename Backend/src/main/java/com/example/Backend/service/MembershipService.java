@@ -57,7 +57,7 @@ public class MembershipService {
 
             User employee = employee_test.get();
 
-            Membership membership = employee.getMembership();
+            Membership membership = new Membership();
             membership.setDate(date);
             membership.setIs_leader(request.isIs_leader());
             membership.setPosition(request.getPosition());
@@ -65,6 +65,7 @@ public class MembershipService {
             membership.setCompany(company);
             Department department = departmentRepository.findById(request.getDep_id()).get();
             membership.setDep(department);
+            membership.setUser(employee);
             membershipRepository.save(membership);
 
             response.put("message", "Membership added");

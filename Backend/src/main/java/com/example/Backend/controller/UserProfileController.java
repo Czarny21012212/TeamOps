@@ -1,6 +1,7 @@
 package com.example.Backend.controller;
 
 import com.example.Backend.Dto.UserProfileDTO;
+import com.example.Backend.Dto.UserSearchDTO;
 import com.example.Backend.model.UserProfile;
 import com.example.Backend.service.UserProfileService;
 import com.example.Backend.service.UserService;
@@ -28,6 +29,10 @@ public class UserProfileController {
     @GetMapping("/showUsersFromTeam/{depId}")
     public ResponseEntity<List<Map<String, String>>> showUsersFromTeam(@PathVariable String depId) {
         return userService.showUsersFromTeam(Long.valueOf(depId));
+    }
+    @PostMapping("/searchUser")
+    public ResponseEntity<List<Object>> searchUser(@RequestBody UserSearchDTO req) {
+        return userService.searchUser(req);
     }
 
 
