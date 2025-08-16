@@ -56,20 +56,14 @@ export default function YourCompany() {
         if(depId == null || depId == undefined) {
             return;
         }
-        router.push(`/department/${depId}`);
+        router.push(`/your-department/${depId}`);
     }
 
     return (
         <div>
-            <h1 className="p-4 m-10 w-50">Company Page</h1>
-
-            <p className=" m-10">Twój Team</p>
-            <div className="bg-gray-100 p-4 m-10 w-60 hover:bg-gray-200 cursor-pointer">
-                <h2>Department Name: {userDepData ? userDepData.depName : "No Department"}</h2>
-                <h2>Department ID: {userDepData ? userDepData.depId : "No Department ID"}</h2>
-            </div>
-            <p className=" m-10">Wszytkie Teamy</p>
-            <div>
+            <h1 className="m-10">Company Page</h1>
+            <p className="m-10">Wszytkie Teamy</p>
+            <div className="grid grid-cols-5 ">
                 {allDepData.map((dep, index) => (
                     <div key={index} className="bg-gray-100 p-4 m-10 w-60 hover:bg-gray-200 cursor-pointer" onClick={() => dep.depId && navigateToDepartment(dep.depId)}>
                         <h2>Department Name: {dep.depName}</h2>
@@ -77,7 +71,7 @@ export default function YourCompany() {
                     </div>
                 ))}
             </div>
-            <Button onClick= {() => setShowDepartmentCreator(!showDepartmentCreator)}>Create Department</Button>
+            <Button className="m-10" onClick={() => setShowDepartmentCreator(!showDepartmentCreator)}>Create Department</Button>
             {showDepartmentCreator && typeof companyId === "number" && !isNaN(companyId) && <DepCreator companyId={companyId} />}
         </div>
     )
