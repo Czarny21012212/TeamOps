@@ -5,6 +5,7 @@ import com.example.Backend.Dto.UserSearchDTO;
 import com.example.Backend.model.UserProfile;
 import com.example.Backend.service.UserProfileService;
 import com.example.Backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +24,20 @@ public class UserProfileController {
     }
 
     @PostMapping("/updateUserProfile")
-    public ResponseEntity<Map<String, String>> updateUserProfile(@RequestBody UserProfileDTO requset) {
+    public ResponseEntity<Map<String, String>> updateUserProfile(@Valid @RequestBody UserProfileDTO requset) {
         return userProfileService.updateUserProfile(requset);
     }
     @GetMapping("/showUsersFromTeam/{depId}")
-    public ResponseEntity<List<Map<String, String>>> showUsersFromTeam(@PathVariable String depId) {
+    public ResponseEntity<List<Map<String, String>>> showUsersFromTeam(@Valid @PathVariable String depId) {
         return userService.showUsersFromTeam(Long.valueOf(depId));
     }
     @PostMapping("/searchUser")
-    public ResponseEntity<List<Object>> searchUser(@RequestBody UserSearchDTO req) {
+    public ResponseEntity<List<Object>> searchUser(@Valid @RequestBody UserSearchDTO req) {
         return userService.searchUser(req);
+    }
+    @GetMapping("/dataOfGivenUser/{userId}")
+    public ResponseEntity<Map<String, String>> dataOfGivenUser(@Valid @PathVariable Integer userId) {
+        return userService.dataOfGivenUser(userId.longValue());
     }
 
 

@@ -2,6 +2,7 @@ package com.example.Backend.controller;
 
 import com.example.Backend.Dto.MembershipWithDepartmentAndCompany;
 import com.example.Backend.service.MembershipService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class MembershipController {
     }
 
     @PostMapping("/addUserToDepartment")
-    public ResponseEntity<Map<String, String>> addUserToDepartment(@RequestBody MembershipWithDepartmentAndCompany request) {
+    public ResponseEntity<Map<String, String>> addUserToDepartment(@Valid @RequestBody MembershipWithDepartmentAndCompany request) {
         return membershipService.addUserToDepartment(request);
     }
 

@@ -2,6 +2,7 @@ package com.example.Backend.controller;
 
 import com.example.Backend.Dto.AnonymousCommentDTO;
 import com.example.Backend.service.AnonymousCommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class AnonymousCommentController {
     }
 
     @PostMapping("/createAnonymousComments")
-    public ResponseEntity<Map<String, String>> createAnonymousComments(@RequestBody AnonymousCommentDTO request){
+    public ResponseEntity<Map<String, String>> createAnonymousComments(@Valid @RequestBody AnonymousCommentDTO request){
         return anonymousCommentService.createAnonumousComment(request);
     }
 }

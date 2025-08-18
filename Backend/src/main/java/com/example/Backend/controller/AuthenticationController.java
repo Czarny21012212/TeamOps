@@ -4,6 +4,7 @@ import com.example.Backend.model.User;
 import com.example.Backend.repository.UserRepository;
 import com.example.Backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,12 +28,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register( @RequestBody User user){
+    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody User user){
         return userService.register(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user, HttpServletRequest request) throws NoSuchAlgorithmException {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody User user, HttpServletRequest request) throws NoSuchAlgorithmException {
         return userService.login(user , request);
     }
 

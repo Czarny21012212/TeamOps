@@ -2,6 +2,7 @@ package com.example.Backend.controller;
 
 import com.example.Backend.Dto.CompanyWithUserDTO;
 import com.example.Backend.service.CompanyService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class CompanyController {
     }
 
     @PostMapping("/createCompany")
-    public ResponseEntity<Map<String, String>> createCompany(@RequestBody CompanyWithUserDTO request) {
+    public ResponseEntity<Map<String, String>> createCompany(@Valid @RequestBody CompanyWithUserDTO request) {
         return companyService.createCompany(request.getCompany());
     }
 

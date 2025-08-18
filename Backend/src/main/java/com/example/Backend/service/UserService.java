@@ -190,6 +190,40 @@ public class UserService {
             list.add(response);
             return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    public ResponseEntity<Map<String, String>> dataOfGivenUser(Long request){
+        Map<String, String> response = new HashMap<>();
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null){
+                response.put("message", "Please log in");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            Optional<User> userCheck = user_repository.findById(request);
+            if(userCheck.isEmpty()){
+                response.put("message", "User not found");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            User user = userCheck.get();
+
+            response.put("email", user.getEmail());
+            response.put("firstName", user.getFirstName());
+            response.put("lastName", user.getLastName());
+            response.put("userId", String.valueOf(user.getId()));
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e){
+            response.put("message", "error" + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
+
+
+
+
+
+
+
+

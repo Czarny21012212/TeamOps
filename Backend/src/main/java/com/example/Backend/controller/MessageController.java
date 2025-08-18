@@ -3,6 +3,7 @@ package com.example.Backend.controller;
 import com.example.Backend.Dto.MessageDTO;
 import com.example.Backend.model.Message;
 import com.example.Backend.service.MessageService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class MessageController {
     }
 
     @PostMapping("/createMessage")
-    public ResponseEntity<Map<String, String>> createMessage(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<Map<String, String>> createMessage(@Valid @RequestBody MessageDTO messageDTO) {
         return messageService.createMessage(messageDTO);
     }
 

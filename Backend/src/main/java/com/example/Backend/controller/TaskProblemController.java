@@ -3,6 +3,7 @@ package com.example.Backend.controller;
 import com.example.Backend.Dto.TaskProblemDTO;
 import com.example.Backend.model.TaskProblem;
 import com.example.Backend.service.TaskProblemService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class TaskProblemController {
     }
 
     @PostMapping("/createTaskProblem")
-    public ResponseEntity<Map<String, String>> createTaskProblem(@RequestBody TaskProblemDTO request) {
+    public ResponseEntity<Map<String, String>> createTaskProblem(@Valid @RequestBody TaskProblemDTO request) {
         return taskProblemService.createTaskProblem(request);
     }
 }

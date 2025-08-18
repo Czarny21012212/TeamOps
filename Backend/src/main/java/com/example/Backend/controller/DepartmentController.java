@@ -3,6 +3,7 @@ package com.example.Backend.controller;
 import com.example.Backend.Dto.CompanyWithDepartmentDTO;
 
 import com.example.Backend.service.DepartmentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -27,7 +28,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/createDepartment")
-    public ResponseEntity<Map<String, String>> createDepartment(@RequestBody CompanyWithDepartmentDTO request) {
+    public ResponseEntity<Map<String, String>> createDepartment(@Valid @RequestBody CompanyWithDepartmentDTO request) {
         return departmentService.createDepartment(request);
     }
 
