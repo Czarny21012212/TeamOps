@@ -204,7 +204,7 @@ export default function UserCreator({depId}: {depId?: number}) {
                                         placeholder="Wprowadź stanowisko..."
                                         value={addUserData.position}
                                         onChange={(e) => setAddUserData({...addUserData, position: e.target.value})} 
-                                        className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-zinc-600"
                                     />
                                 </div>
 
@@ -218,7 +218,7 @@ export default function UserCreator({depId}: {depId?: number}) {
                                         type="text"
                                         placeholder="Wpisz imię i nazwisko..."
                                         onChange={(e) => SearchUser(e)}
-                                        className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-zinc-600"
                                     />
                                 </div>
 
@@ -233,7 +233,7 @@ export default function UserCreator({depId}: {depId?: number}) {
                                                     onClick={() => setAddUserData({...addUserData, user_id: user.userId})}
                                                     className="flex items-center gap-3 p-2 rounded hover:bg-zinc-700 cursor-pointer transition-colors"
                                                 >
-                                                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                                    <div className="w-8 h-8 bg-zinc-700 rounded-full flex items-center justify-center text-white text-sm font-medium">
                                                         {user.firstName.charAt(0)}
                                                     </div>
                                                     <span className="text-white">{user.firstName} {user.lastName}</span>
@@ -247,7 +247,7 @@ export default function UserCreator({depId}: {depId?: number}) {
                                 <Button 
                                     onClick={() => AddUserToDepartment()}
                                     disabled={addUserData.user_id === 0 || !addUserData.position}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     Dodaj użytkownika
                                 </Button>
@@ -277,7 +277,7 @@ export default function UserCreator({depId}: {depId?: number}) {
                                 <CardContent>
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                                            <div className="w-16 h-16 bg-zinc-700 rounded-full flex items-center justify-center text-white text-xl font-bold">
                                                 {dataVisibleUser.firstName.charAt(0)}
                                             </div>
                                             <div>
