@@ -18,7 +18,7 @@ interface NavbarProps {
   activeRoute?: string;
 }
 
-export default function Navbar({ activeRoute = "/" }: NavbarProps) {
+export default function Navbar({ activeRoute = "/home" }: NavbarProps) {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -26,7 +26,7 @@ export default function Navbar({ activeRoute = "/" }: NavbarProps) {
     {
       label: "Strona główna",
       icon: Home,
-      route: "/",
+      route: "/home",
       id: "home"
     },
     {

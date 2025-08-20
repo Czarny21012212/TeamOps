@@ -111,7 +111,7 @@ export default function Home({ companyId }: { companyId: number }) {
 
     return(
         <>
-            <Navbar activeRoute="/" />
+            <Navbar activeRoute="/home" />
             <div className="min-h-screen bg-black p-6 ml-72">
                 <div className="max-w-5xl mx-auto space-y-8">
                     {/* Welcome Header */}
