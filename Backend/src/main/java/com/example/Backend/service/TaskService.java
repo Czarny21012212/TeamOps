@@ -1,6 +1,8 @@
 package com.example.Backend.service;
 
+import com.example.Backend.Dto.TaskDto;
 import com.example.Backend.Dto.TaskWithUserAndDepartmentDTO;
+import com.example.Backend.config.WebSocketResponse;
 import com.example.Backend.model.Department;
 import com.example.Backend.model.Task;
 import com.example.Backend.model.User;
@@ -12,9 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TaskService {
@@ -50,7 +50,7 @@ public class TaskService {
             Task task = new Task();
             task.setDate(date);
             task.setTitle(request.getTitle());
-            task.setCotent(request.getContent());
+            task.setContent(request.getContent());
             task.setDep(dep);
             task.setDifficult_levels(request.getDifficult_levels());
             task.setIs_read(false);
@@ -66,4 +66,46 @@ public class TaskService {
         }
 
     }
+
+    public WebSocketResponse<List<TaskDto>> UserTasks(){
+
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null){
+                return null;
+            }
+            Optional<User> checkUser = userRepository.findByEmail(auth.getName());
+            if(checkUser.isEmpty()){
+                return new WebSocketResponse<>(404, "Please Log in", null);
+            }
+            User user = checkUser.get();
+
+            Optional<List<TaskDto>> checkTasks = taskRepository.userTasks(user);
+            if(checkTasks.isEmpty()){
+                return new WebSocketResponse<>(200, "Not found", null);
+            }
+            List<TaskDto> tasks = checkTasks.get();
+            return new WebSocketResponse<>(200, "Found tasks", tasks);
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return new WebSocketResponse<>(500, "Internal Server Error ", null);
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

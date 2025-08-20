@@ -202,19 +202,19 @@ public class DepartmentService {
 
             Optional<Company> CheckCompany = companyRepository.showCompany(user);
             if(CheckCompany.isEmpty()){
-                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(false, HttpStatus.OK);
             }
             Company company = CheckCompany.get();
 
             Optional<Department> CheckDepartment = departmentRepository.findById(depId);
             if(CheckDepartment.isEmpty()){
-                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(false, HttpStatus.OK);
             }
             Department department = CheckDepartment.get();
 
             Optional<Boolean> checkIsLeader = membershipRepository.isLeader(user, company, department);
             if(checkIsLeader.isEmpty()){
-                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(false, HttpStatus.OK);
             }
             Boolean leader = checkIsLeader.get();
 

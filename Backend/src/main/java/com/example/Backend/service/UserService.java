@@ -143,6 +143,7 @@ public class UserService {
 
             for(User employee : users){
                 Map<String, String> map = new HashMap<>();
+                map.put("userId", String.valueOf(employee.getId()));
                 map.put("email", employee.getEmail());
                 map.put("firstName", employee.getFirstName());
                 map.put("lastName", employee.getLastName());

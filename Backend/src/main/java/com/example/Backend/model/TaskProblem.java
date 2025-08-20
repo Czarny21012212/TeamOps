@@ -12,7 +12,7 @@ public class TaskProblem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String title;
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
     private Date date;
 

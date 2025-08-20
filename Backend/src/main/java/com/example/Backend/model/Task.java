@@ -14,8 +14,8 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
-    @Lob
-    private String cotent;
+    @Column(columnDefinition = "TEXT")
+    private String content;
     private char difficult_levels;
     private Date date;
     private String status;
@@ -32,9 +32,9 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskProblem> task_problems = new ArrayList<>();
 
-    public Task(String title, String cotent, char difficult_levels, Date date, String status, boolean is_read, User user, Department dep) {
+    public Task(String title, String content, char difficult_levels, Date date, String status, boolean is_read, User user, Department dep) {
         this.title = title;
-        this.cotent = cotent;
+        this.content = content;
         this.difficult_levels = difficult_levels;
         this.date = date;
         this.status = status;
@@ -49,8 +49,8 @@ public class Task {
     public String getTitle() {return title;}
     public void setTitle(String title) {this.title = title;}
 
-    public String getCotent() {return cotent;}
-    public void setCotent(String cotent) {this.cotent = cotent;}
+    public String getContent() {return content;}
+    public void setContent(String content) {this.content = content;}
 
     public char getDifficult_levels() {return difficult_levels;}
     public void setDifficult_levels(char difficult_levels) {this.difficult_levels = difficult_levels;}
