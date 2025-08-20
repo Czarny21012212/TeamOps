@@ -98,9 +98,25 @@ public class DepartmentService {
             }
             User user = userRepository.findByEmail(auth.getName()).get();
 
-            Long companyId = companyRepository.findCompanyIdByUserID(user);
+            Optional<Long> companyIdFromRepo = companyRepository.findCompanyIdByUserID(user);
+            Long companyId = 0L;
+            if (companyIdFromRepo.isEmpty()) {
+                companyId = null;
+            }
 
-            Optional<List<Department>> departmentsCheck = companyRepository.showAllDepartments(companyId);
+            Optional<Company> companyIdFromMembership = membershipRepository.findCompanyIdByUserID(user);
+            if (companyIdFromMembership.isEmpty()) {
+                response.put("status", "create a company first");
+                return new ResponseEntity<>(list, HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<List<Department>> departmentsCheck;
+           if(companyId == null){
+               companyId = companyIdFromMembership.get().getId();
+               departmentsCheck = companyRepository.showAllDepartments(companyId);
+           }else{
+               departmentsCheck = companyRepository.showAllDepartments(companyId);
+           }
 
             if(departmentsCheck.isEmpty()){
                 response.put("message", "Department list is empty");
@@ -121,6 +137,7 @@ public class DepartmentService {
         }catch(Exception e){
             response.put("message", e.getMessage());
             list.add(response);
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

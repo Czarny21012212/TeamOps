@@ -37,7 +37,6 @@ public class DepartmentController {
         return departmentService.showAllDepartment();
     }
 
-
     @GetMapping("/showUserDepartment")
     public ResponseEntity<Map<String, String>> showUserDepartment() {
         return departmentService.showUserDepartment();

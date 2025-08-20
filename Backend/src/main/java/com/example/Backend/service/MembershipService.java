@@ -46,7 +46,12 @@ public class MembershipService {
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
             User user = userRepository.findByEmail(auth.getName()).get();
-            Long company_id = companyRepository.findCompanyIdByUserID(user);
+            Optional<Long> company_idCheck = companyRepository.findCompanyIdByUserID(user);
+            if(company_idCheck.isEmpty()){
+                response.put("message", "You are not logged in");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            Long company_id = company_idCheck.get();
 
             Optional<User> employee_test = userRepository.findById(request.getUser_id());
 
@@ -57,7 +62,7 @@ public class MembershipService {
 
             User employee = employee_test.get();
 
-            Membership membership = new Membership();
+            Membership membership = employee.getMembership();
             membership.setDate(date);
             membership.setIs_leader(request.isIs_leader());
             membership.setPosition(request.getPosition());

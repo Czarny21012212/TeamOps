@@ -24,4 +24,7 @@ public interface MembershipRepository extends JpaRepository<Membership, Long> {
     @Query("Select m.user from Membership m where m.dep = :dep")
     List<User> showUsersFromDep(@Param("dep") Department dep);
 
+    @Query("select m.company from Membership m where m.user = :user")
+    Optional<Company> findCompanyIdByUserID(@Param("user") User user);
+
 }
