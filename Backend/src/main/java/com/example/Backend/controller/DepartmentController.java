@@ -41,4 +41,9 @@ public class DepartmentController {
     public ResponseEntity<Map<String, String>> showUserDepartment() {
         return departmentService.showUserDepartment();
     }
+
+    @GetMapping("/isLeader/{depId}")
+    public ResponseEntity<Boolean> isLeader(@Valid @PathVariable Long depId) {
+        return departmentService.isLeader(depId);
+    }
 }

@@ -21,7 +21,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Long> findCompanyIdByUserID(@Param("user") User user);
 
     @Query("Select m.company from Membership m where m.user = :user" )
-    Optional<Company> showComapny(@Param("user") User user);
+    Optional<Company> showCompany(@Param("user") User user);
 
     @Query("Select c.id from Company c where c.user = :user")
     Optional<Long> findYourCompanyId(@Param("user") User user);

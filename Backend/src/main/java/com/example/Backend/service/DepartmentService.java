@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 @Service
@@ -179,6 +180,51 @@ public class DepartmentService {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<Boolean> isLeader(Long depId){
+        Map<String, String> response = new HashMap<>();
+        try{
+            System.out.println("Start");
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null){
+                return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<User> userCheck = userRepository.findByEmail(auth.getName());
+            if (userCheck.isEmpty()) {
+                return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+            }
+            User user = userCheck.get();
+
+
+            Optional<Company> CheckCompany = companyRepository.showCompany(user);
+            if(CheckCompany.isEmpty()){
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+            }
+            Company company = CheckCompany.get();
+
+            Optional<Department> CheckDepartment = departmentRepository.findById(depId);
+            if(CheckDepartment.isEmpty()){
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+            }
+            Department department = CheckDepartment.get();
+
+            Optional<Boolean> checkIsLeader = membershipRepository.isLeader(user, company, department);
+            if(checkIsLeader.isEmpty()){
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+            }
+            Boolean leader = checkIsLeader.get();
+
+            return new ResponseEntity<>(leader, HttpStatus.OK);
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
 
 
 }

@@ -64,7 +64,7 @@ public class CompanyService {
             }
 
             User user = userRepository.findByEmail(auth.getName()).get();
-            Optional<Company> companyCheck = companyRepository.showComapny(user);
+            Optional<Company> companyCheck = companyRepository.showCompany(user);
 
             if(companyCheck.isEmpty()){
                 response.put("message", "You are not in any company");

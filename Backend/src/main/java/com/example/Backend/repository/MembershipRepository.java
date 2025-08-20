@@ -27,4 +27,7 @@ public interface MembershipRepository extends JpaRepository<Membership, Long> {
     @Query("select m.company from Membership m where m.user = :user")
     Optional<Company> findCompanyIdByUserID(@Param("user") User user);
 
+    @Query("Select m.is_leader from Membership m where m.user = :user And m.company = :company And m.dep = :dep")
+    Optional<Boolean> isLeader(@Param("user") User user, @Param("company") Company company,@Param("dep") Department dep);
+
 }
