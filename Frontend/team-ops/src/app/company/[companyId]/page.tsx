@@ -39,24 +39,17 @@ export default function Company() {
     }, [companyId]);
 
     useEffect(() => {
-        fetch("http://localhost:8081/api/showAllDepartment", {
-            method: "GET",
+        fetch("http://localhost:8081/api/showAllDepartments", {
             credentials: "include"
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
+        .then(res => res.ok ? res.json() : Promise.reject("Failed"))
         .then(data => {
-            console.log("User Department Data:", data);
-            setAllDepData(data)
+            setAllDepData(data); 
+            console.log(data)
+            router.push(`/company/${companyId}`)
         })
-        .catch(error => {
-            console.error("There was a problem with the fetch operation:", error);
-        });
-    }, [companyId])
+        .catch(console.error)
+    }, []);
 
     function navigateToDepartment(depId: number) {
         if(depId == null || depId == undefined) {
@@ -68,10 +61,9 @@ export default function Company() {
     return (
         <div>
             <h1 className="p-4 m-10 w-50">Company Page</h1>
-            <Button>Create Company</Button>
 
             <p className=" m-10">Twój Team</p>
-            <div className="bg-gray-100 p-4 m-10 w-60 hover:bg-gray-200 cursor-pointer">
+            <div className="bg-gray-100 p-4 m-10 w-60 hover:bg-gray-200 cursor-pointer" onClick={() => userDepData.depId && navigateToDepartment(userDepData.depId)}>
                 <h2>Department Name: {userDepData ? userDepData.depName : "No Department"}</h2>
                 <h2>Department ID: {userDepData ? userDepData.depId : "No Department ID"}</h2>
             </div>

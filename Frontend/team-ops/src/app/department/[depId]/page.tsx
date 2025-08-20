@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Mail, CheckCircle, User, ArrowLeft, UserPlus } from "lucide-react";
+import TaskCreator from '../../components/task-creator/page'
+import { error } from "console";
 
 export default function Department() {
   const params = useParams();
@@ -21,28 +23,53 @@ export default function Department() {
   const [usersData, setUsersData] = useState<usersData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        fetch(`http://localhost:8081/api/showUsersFromTeam/${depId}`, {
-            method: "GET",
-            credentials: "include"
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
-        .then(data => {
-            setUsersData(data)
-        })
-        .catch(error => {
-            console.error("There was a problem with the fetch operation:", error);
-        })
-        .finally(() => {
-            setIsLoading(false);
-        });
+  const [isLeader, setIsLeader] = useState(false)
+  const [createTask, setCreateTask] = useState(false)
 
-    }, [depId]);
+  useEffect(() => {
+    fetch(`http://localhost:8081/api/isLeader/${depId}`, {
+      method: "Get",
+      credentials: "include"
+    })
+    .then(response =>{
+      if(response.ok){
+        return response.json()
+      }else{
+         throw new Error("Network response was not ok");
+      }
+    })
+    .then(data => {
+      setIsLeader(data)
+      console.log("Is Ledaer: " + data)
+    })
+    .catch(error => {
+          console.error("There was a problem with the fetch operation:", error);
+    })
+  
+  }, [depId])
+
+  useEffect(() => {
+      fetch(`http://localhost:8081/api/showUsersFromTeam/${depId}`, {
+          method: "GET",
+          credentials: "include"
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error("Network response was not ok");
+          }
+          return response.json();
+      })
+      .then(data => {
+          setUsersData(data)
+      })
+      .catch(error => {
+          console.error("There was a problem with the fetch operation:", error);
+      })
+      .finally(() => {
+          setIsLoading(false);
+      });
+
+  }, [depId]);
 
     if (isLoading) {
         return (
@@ -75,9 +102,13 @@ export default function Department() {
                 Zarządzaj zespołem i monitoruj postępy
               </p>
             </div>
+            
           </div>
-          
+          <div>
+            { isLeader && <Button onClick={() => setCreateTask(!createTask)}>Create task</Button>}  
+          </div>
         </div>
+        {createTask && isLeader && (<TaskCreator depId={Number(depId)} />)}
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
