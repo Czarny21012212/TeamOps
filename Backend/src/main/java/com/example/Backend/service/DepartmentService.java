@@ -86,47 +86,49 @@ public class DepartmentService {
         }
     }
 
-    public ResponseEntity<List<Object>> showAllDepartment(){
+    public ResponseEntity<List<Object>> showAllDepartment() {
         List<Object> list = new ArrayList<>();
         Map<String, String> response = new HashMap<>();
 
-        try{
+        try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-            if(auth == null){
+            if (auth == null) {
                 response.put("message", "You are not logged in");
-                return new ResponseEntity<>(list, HttpStatus.UNAUTHORIZED);
-            }
-            User user = userRepository.findByEmail(auth.getName()).get();
-
-            Optional<Long> companyIdFromRepo = companyRepository.findCompanyIdByUserID(user);
-            Long companyId = 0L;
-            if (companyIdFromRepo.isEmpty()) {
-                companyId = null;
-            }
-
-            Optional<Company> companyIdFromMembership = membershipRepository.findCompanyIdByUserID(user);
-            if (companyIdFromMembership.isEmpty()) {
-                response.put("status", "create a company first");
+                list.add(response);
                 return new ResponseEntity<>(list, HttpStatus.UNAUTHORIZED);
             }
 
-            Optional<List<Department>> departmentsCheck;
-           if(companyId == null){
-               companyId = companyIdFromMembership.get().getId();
-               departmentsCheck = companyRepository.showAllDepartments(companyId);
-           }else{
-               departmentsCheck = companyRepository.showAllDepartments(companyId);
-           }
+            Optional<User> userCheck = userRepository.findByEmail(auth.getName());
+            if (userCheck.isEmpty()) {
+                response.put("message", "User not found");
+                list.add(response);
+                return new ResponseEntity<>(list, HttpStatus.UNAUTHORIZED);
+            }
+            User user = userCheck.get();
 
-            if(departmentsCheck.isEmpty()){
+            Optional<Long> companyIdFromOwner = companyRepository.findCompanyIdByUserID(user);
+            Long companyId = companyIdFromOwner.orElse(null);
+
+            if (companyId == null) {
+                Optional<Company> companyFromMembership = membershipRepository.findCompanyIdByUserID(user);
+                if (companyFromMembership.isEmpty()) {
+                    response.put("status", "Create a company first");
+                    list.add(response);
+                    return new ResponseEntity<>(list, HttpStatus.UNAUTHORIZED);
+                }
+                companyId = companyFromMembership.get().getId();
+            }
+
+            Optional<List<Department>> departmentsCheck = companyRepository.showAllDepartments(companyId);
+
+            if (departmentsCheck.isEmpty() || departmentsCheck.get().isEmpty()) {
                 response.put("message", "Department list is empty");
+                list.add(response);
                 return new ResponseEntity<>(list, HttpStatus.OK);
             }
-            List<Department> departments = departmentsCheck.get();
 
-            System.out.println(departments.size());
-            for(Department department : departments){
+            for (Department department : departmentsCheck.get()) {
                 Map<String, String> map = new HashMap<>();
                 map.put("depName", department.getDep_name());
                 map.put("depId", String.valueOf(department.getId()));
@@ -135,13 +137,14 @@ public class DepartmentService {
 
             return new ResponseEntity<>(list, HttpStatus.OK);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             response.put("message", e.getMessage());
             list.add(response);
             System.out.println(e.getMessage());
             return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public ResponseEntity<Map<String, String>> showUserDepartment(){
         Map<String, String> response = new HashMap<>();
