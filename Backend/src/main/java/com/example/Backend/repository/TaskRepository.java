@@ -22,5 +22,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Department getDepId(@Param("user") User user);
 
     @Query("Select t from Task t where t.user = :user ")
-    Optional<List<TaskDto>> userTasks(@Param("user") User user);
+    Optional<List<Task>> userTasks(@Param("user") User user);
 }

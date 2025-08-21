@@ -67,31 +67,33 @@ public class TaskService {
 
     }
 
-    public WebSocketResponse<List<TaskDto>> UserTasks(){
+    public List<TaskDto> getUserTasksByEmail(String email) {
+        Optional<User> checkUser = userRepository.findByEmail(email);
+        if (checkUser.isEmpty()) return new ArrayList<>();
+        User user = checkUser.get();
+        System.out.println(user.getEmail());
 
-        try{
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if(auth == null){
-                return null;
-            }
-            Optional<User> checkUser = userRepository.findByEmail(auth.getName());
-            if(checkUser.isEmpty()){
-                return new WebSocketResponse<>(404, "Please Log in", null);
-            }
-            User user = checkUser.get();
+        Optional<List<Task>> checkTasks = taskRepository.userTasks(user);
+        if (checkTasks.isEmpty() || checkTasks.get().isEmpty()) return new ArrayList<>();
+        List<Task> tasks = checkTasks.get();
 
-            Optional<List<TaskDto>> checkTasks = taskRepository.userTasks(user);
-            if(checkTasks.isEmpty()){
-                return new WebSocketResponse<>(200, "Not found", null);
-            }
-            List<TaskDto> tasks = checkTasks.get();
-            return new WebSocketResponse<>(200, "Found tasks", tasks);
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            return new WebSocketResponse<>(500, "Internal Server Error ", null);
+        List<TaskDto> result = new ArrayList<>();
+        for (Task task : tasks) {
+            result.add(new TaskDto(
+                    task.getId(),
+                    task.getDifficult_levels(),
+                    task.getTitle(),
+                    task.getDate(),
+                    task.getDep() != null ? task.getDep().getId() : null,
+                    task.getUser() != null ? task.getUser().getId() : null,
+                    task.getStatus(),
+                    task.getContent()
+            ));
         }
+        return result;
     }
+
+
 }
 
 
