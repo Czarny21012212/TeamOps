@@ -37,6 +37,15 @@ public class TaskController {
         return taskService.getUserTasksByEmail(email);
     }
 
+    @MessageMapping("/depTasks")
+    @SendTo("/topic/depTasks")
+    public List<TaskDto> depTasks(@Header("user-email") String email) {
+        System.out.println("email " + email);
+        return taskService.getUserTasksByEmail(email);
+    }
+
+
+
 
 
 }

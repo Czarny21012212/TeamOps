@@ -44,7 +44,12 @@ public class TaskService {
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
             Date date  = new Date();
-            Department dep = taskRepository.getDepId(leader);
+            Optional<Department> checkDep = taskRepository.getDepId(leader);
+            if(checkDep.isEmpty()){
+                response.put("message", "you are not the leader");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            Department dep = checkDep.get();
             User employee = userRepository.findById(request.getUser_id()).get();
 
             Task task = new Task();
@@ -91,6 +96,73 @@ public class TaskService {
             ));
         }
         return result;
+    }
+
+    public List<TaskDto> getUsertasksSentByEmail(String email){
+        Optional<User> checkUser = userRepository.findByEmail(email);
+        if (checkUser.isEmpty()) return new ArrayList<>();
+        User user = checkUser.get();
+
+        Optional<Department> checkUserDep = taskRepository.getDepId(user);
+        if(checkUserDep.isEmpty()) return new ArrayList<>();
+        Department userDep = checkUserDep.get();
+
+        Optional<List<Task>> checkDepTasks = taskRepository.depTasks(userDep);
+        if (checkDepTasks.isEmpty()) return new ArrayList<>();
+        List<Task> tasks = checkDepTasks.get();
+
+        List<TaskDto> result = new ArrayList<>();
+
+        for (Task task : tasks) {
+            result.add(new TaskDto(
+                    task.getId(),
+                    task.getDifficult_levels(),
+                    task.getTitle(),
+                    task.getDate(),
+                    task.getDep() != null ? task.getDep().getId() : null,
+                    task.getUser() != null ? task.getUser().getId() : null,
+                    task.getStatus(),
+                    task.getContent()
+            ));
+        }
+        return result;
+    }
+
+    public ResponseEntity<Map<String, String>> getTask(Long task_id){
+        Map<String, String> response = new HashMap<>();
+
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null){
+                response.put("message", "you have to log in first");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+            Optional<User> checkUser = userRepository.findByEmail(auth.getName());
+            if(checkUser.isEmpty()){
+                response.put("message", "you have to log in first");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<Task> checkTask = taskRepository.findById(task_id);
+            if(checkTask.isEmpty()){
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+
+            Task task = checkTask.get();
+            task.setIs_read(true);
+            taskRepository.save(task);
+
+            response.put("id", String.valueOf(task.getId()));
+            response.put("date", String.valueOf(task.getDate()));
+            response.put("Content", String.valueOf(task.getContent()));
+            response.put("difficultLevel", String.valueOf(task.getDifficult_levels()));
+            response.put("status", String.valueOf(task.getStatus()));
+            response.put("title", String.valueOf(task.getTitle()));
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        }catch(Exception e){
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
