@@ -5,6 +5,7 @@ import Navbar from "../components/navbar/page";
 import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import { useRouter } from "next/navigation";
 
 type user = {
     userId: number,
@@ -34,6 +35,8 @@ export default function Tasks(){
     });
 
     const [tasks, setTasks] = useState<task[]>([]);
+    const [sendTasks, setSendTasks] = useState<task[]>([]);
+    const router = useRouter()
 
     
     useEffect(() => {
@@ -66,7 +69,7 @@ export default function Tasks(){
     client.onConnect = () => {
         client.subscribe("/topic/userTasks", (message) => {
             const data = JSON.parse(message.body);
-            setTasks(data)
+            setSendTasks(data)
             console.log(data)
         });
 
@@ -78,6 +81,38 @@ export default function Tasks(){
             }
     });
     }
+
+
+    client.activate();
+
+    return () => {
+        client.deactivate().catch((err) => console.error("❌ Disconnect error:", err));
+    };
+    }, [userData.email]);
+
+    useEffect(() => {
+    const client = new Client({
+        webSocketFactory: () => new SockJS("http://localhost:8081/ws"),
+        reconnectDelay: 2000,
+        debug: (str) => console.log(str),
+    });
+
+    client.onConnect = () => {
+        client.subscribe("/topic/depTasks", (message) => {
+            const data = JSON.parse(message.body);
+            setTasks(data)
+            console.log(data)
+        });
+
+       console.log("Wysyłam żądanie z nagłówkiem user-email:", userData.email);
+        client.publish({
+            destination: "/app/depTasks",
+            headers: {
+                "user-email": String(userData.email)
+            }
+    });
+    }
+
 
     client.activate();
 
@@ -124,6 +159,21 @@ export default function Tasks(){
                 {displayReceivedTasks && (
                 <div className=" bg-gray-900 p-4 rounded-lg">
                     {tasks.map((task) => (
+                    <div key={task.id} className="m-10" onClick={() => router.push(`/task/${task.id}`)}>
+                        <p>{task.content}</p>
+                        <p>{task.date}</p>
+                        <p>{task.difficultLevels}</p>
+                        <p>{task.id}</p>
+                        <p>{task.isRead}</p>
+                        <p>{task.status}</p>
+                        <p>{task.title}</p>
+                    </div>
+                    ))}
+                </div>
+                )}
+                {displaySentTasks && (
+                <div className="text-center bg-gray-900 p-4 rounded-lg">
+                    {sendTasks.map((task) => (
                     <div key={task.id} className="m-10">
                         <p>{task.content}</p>
                         <p>{task.date}</p>
@@ -133,12 +183,7 @@ export default function Tasks(){
                         <p>{task.status}</p>
                         <p>{task.title}</p>
                     </div>
-                ))}
-                </div>
-                )}
-                {displaySentTasks && (
-                <div className="text-center bg-gray-900 p-4 rounded-lg">
-                    Lista zadań wysłanych
+                    ))}
                 </div>
                 )}
             </div>
